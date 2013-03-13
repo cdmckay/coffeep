@@ -19,9 +19,11 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package org.cdmckay.coffeep.model;
+package org.cdmckay.coffeep;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CoffeepType {
@@ -30,8 +32,14 @@ public class CoffeepType {
     public Set<String> modifiers = new HashSet<String>();
     public String type;
     public String name;
-    public String superClass;
-    public Set<String> interfaces = new HashSet<String>();
-    public Set<String> typeParameters = new HashSet<String>();
+    public int majorVersion;
+    public int minorVersion;
+    public Set<String> flags = new HashSet<String>();
+    public List<CoffeepField> fields = new ArrayList<CoffeepField>();
+    public List<CoffeepMethod> methods = new ArrayList<CoffeepMethod>();
+
+    // TODO Add superClass and interfaces.
+    //public String superClass;
+    //public Set<String> interfaces = new HashSet<String>();
 
 }

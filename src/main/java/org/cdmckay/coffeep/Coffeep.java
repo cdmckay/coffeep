@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package org.cdmckay.coffeep.model;
+package org.cdmckay.coffeep;
 
-public class CoffeepMethod {
+public class Coffeep {
+
+    public CoffeepSystemInfo systemInfo;
+    public CoffeepType type;
+
 }

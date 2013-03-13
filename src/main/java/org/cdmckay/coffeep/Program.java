@@ -24,8 +24,6 @@ import com.sun.tools.classfile.ConstantPoolException;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.Context;
 import org.apache.log4j.Logger;
-import org.cdmckay.coffeep.model.Coffeep;
-import org.cdmckay.coffeep.model.CoffeepSystemInfo;
 
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
@@ -41,7 +39,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Program {
 
-    static Logger logger = Logger.getLogger(Program.class);
+    private static Logger logger = Logger.getLogger(Program.class);
 
     public static void main(String[] args) throws IOException, ConstantPoolException {
         if (args.length == 0) {

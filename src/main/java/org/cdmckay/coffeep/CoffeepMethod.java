@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 
-package org.cdmckay.coffeep.model;
+package org.cdmckay.coffeep;
 
-import java.net.URI;
-
-public class CoffeepSystemInfo {
-    public URI classFileUri;
-    public long classFileSize;
-    public long lastModifiedTimestamp;
-    public String digestAlgorithm;
-    public String digest;
+public class CoffeepMethod {
 }
