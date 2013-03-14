@@ -27,9 +27,9 @@ import java.util.Set;
 
 public class CoffeepField {
 
+    public String internalType;
     public Set<String> modifiers = new HashSet<String>();
     public String type;
-    public String internalType;
     public String name;
     public Set<String> flags = new HashSet<String>();
 

@@ -34,10 +34,13 @@ public class FieldReader {
     public CoffeepField read() {
         final CoffeepField coffeepField = new CoffeepField();
 
+        coffeepField.internalType = ReaderHelper.getString(field.descriptor, "value", constantPool);
         coffeepField.modifiers = field.access_flags.getFieldModifiers();
         coffeepField.type = ReaderHelper.getString(field.descriptor, "fieldType", constantPool);
-        final Signature_attribute signatureAttribute =
-            (Signature_attribute) field.attributes.get(Attribute.Signature);
+        coffeepField.name = ReaderHelper.getString(field, "name", constantPool);
+        coffeepField.flags = field.access_flags.getFieldFlags();
+
+        final Signature_attribute signatureAttribute = (Signature_attribute) field.attributes.get(Attribute.Signature);
         if (signatureAttribute != null) {
             try {
                 final Type type = signatureAttribute.getParsedSignature().getType(constantPool);
@@ -46,9 +49,6 @@ public class FieldReader {
                 logger.warn("Exception while getting signature attribute", e);
             }
         }
-        coffeepField.internalType = ReaderHelper.getString(field.descriptor, "value", constantPool);
-        coffeepField.name = ReaderHelper.getString(field, "name", constantPool);
-        coffeepField.flags = field.access_flags.getFieldFlags();
 
         return coffeepField;
     }

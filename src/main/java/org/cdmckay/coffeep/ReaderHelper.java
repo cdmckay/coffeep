@@ -38,10 +38,6 @@ public final class ReaderHelper {
     }
 
     public static Class<?> primitivize(Class<?> type) {
-        if (type.isPrimitive()) {
-            return type;
-        }
-
         if (Boolean.class.equals(type)) {
             return Boolean.TYPE;
         }
@@ -66,8 +62,7 @@ public final class ReaderHelper {
         if (Double.class.equals(type)) {
             return Double.TYPE;
         }
-
-        throw new RuntimeException("Error translating type: " + type);
+        return type;
     }
 
 }

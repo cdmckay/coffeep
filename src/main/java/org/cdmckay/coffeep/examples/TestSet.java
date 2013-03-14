@@ -1,9 +1,6 @@
 package org.cdmckay.coffeep.examples;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class TestSet implements Set<String> {
 
@@ -42,6 +39,21 @@ public class TestSet implements Set<String> {
     @Override
     public boolean add(String s) {
         return false;
+    }
+
+    public boolean addTwo(String s1, String s2) throws RuntimeException {
+        return add(s1) && add(s2);
+    }
+
+    public <K, V> boolean addValues(Map<K, V> map, int limit) {
+        boolean result = true;
+        int count = 0;
+        for (V value : map.values()) {
+            if (count > limit) break;
+            result = result && add(value.toString());
+            count++;
+        }
+        return result;
     }
 
     @Override

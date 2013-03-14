@@ -38,7 +38,8 @@ public class CoffeepType {
     public List<CoffeepField> fields = new ArrayList<CoffeepField>();
     public List<CoffeepMethod> methods = new ArrayList<CoffeepMethod>();
 
-    // TODO Add superClass and interfaces.
+    // TODO Add typeParameters, superClass and interfaces.
+    //public Set<String> typeParameters = new HashSet<String>();
     //public String superClass;
     //public Set<String> interfaces = new HashSet<String>();
 

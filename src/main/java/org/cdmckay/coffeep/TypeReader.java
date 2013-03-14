@@ -56,6 +56,10 @@ public class TypeReader {
             coffeepType.fields.add(new FieldReader(classFile.constant_pool, field).read());
         }
 
+        for (Method method : classFile.methods) {
+            coffeepType.methods.add(new MethodReader(classFile.constant_pool, method).read());
+        }
+
         return coffeepType;
     }
 
