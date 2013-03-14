@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package org.cdmckay.coffeep;
+package org.cdmckay.coffeep.readers;
 
 import com.sun.tools.classfile.*;
 import org.apache.log4j.Logger;
+import org.cdmckay.coffeep.CoffeepMethod;
 
 import java.util.Arrays;
 
 public class MethodReader {
 
-    private static Logger logger = Logger.getLogger(MethodReader.class);
+    private static final Logger logger = Logger.getLogger(MethodReader.class);
 
-    private ConstantPool constantPool;
-    private Method method;
+    private final ConstantPool constantPool;
+    private final Method method;
 
     public MethodReader(ConstantPool constantPool, Method method) {
         this.constantPool = constantPool;
@@ -40,16 +41,15 @@ public class MethodReader {
         coffeepMethod.modifiers = method.access_flags.getMethodModifiers();
         coffeepMethod.name = ReaderHelper.getString(method, "name", constantPool);
         coffeepMethod.flags = method.access_flags.getFieldFlags();
+        coffeepMethod.returnType = ReaderHelper.getString(method.descriptor, "returnType", constantPool);
 
-        final Descriptor descriptor;
-        final Signature_attribute signatureAttribute =
-            (Signature_attribute) method.attributes.get(Attribute.Signature);
+        final Signature_attribute signatureAttribute = (Signature_attribute) method.attributes.get(Attribute.Signature);
         if (signatureAttribute == null) {
-            descriptor = method.descriptor;
-
             // This doesn't need to handle the case Foo<Bar, Baz> because if the parameter types have type parameters,
             // they'll have a Signature attribute.
-            final String joinedParameterTypes = ReaderHelper.getString(descriptor, "parameterTypes", constantPool);
+            final String joinedParameterTypes = ReaderHelper.getString(
+                method.descriptor, "parameterTypes", constantPool
+            );
             coffeepMethod.parameterTypes = Arrays.asList(
                 joinedParameterTypes.substring(1, joinedParameterTypes.length() - 1).split(", ")
             );
@@ -65,7 +65,6 @@ public class MethodReader {
             }
         } else {
             final Signature methodSignature = signatureAttribute.getParsedSignature();
-            descriptor = methodSignature;
             try {
                 final Type.MethodType methodType = (Type.MethodType) methodSignature.getType(constantPool);
                 if (methodType.typeParamTypes != null) {
@@ -88,7 +87,10 @@ public class MethodReader {
             }
         }
 
-        coffeepMethod.returnType = ReaderHelper.getString(descriptor, "returnType", constantPool);
+        final Code_attribute codeAttribute = (Code_attribute) method.attributes.get(Attribute.Code);
+        if (codeAttribute != null) {
+            coffeepMethod.code = new CodeReader(codeAttribute).read();
+        }
 
         return coffeepMethod;
     }

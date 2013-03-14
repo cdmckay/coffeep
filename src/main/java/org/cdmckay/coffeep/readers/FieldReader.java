@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package org.cdmckay.coffeep;
+package org.cdmckay.coffeep.readers;
 
 import com.sun.tools.classfile.*;
 import org.apache.log4j.Logger;
+import org.cdmckay.coffeep.CoffeepField;
 
 public class FieldReader {
 
-    private static Logger logger = Logger.getLogger(FieldReader.class);
+    private static final Logger logger = Logger.getLogger(FieldReader.class);
 
-    private ConstantPool constantPool;
-    private Field field;
+    private final ConstantPool constantPool;
+    private final Field field;
 
     public FieldReader(ConstantPool constantPool, Field field) {
         this.constantPool = constantPool;

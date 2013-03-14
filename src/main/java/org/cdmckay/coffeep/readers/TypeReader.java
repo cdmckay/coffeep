@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package org.cdmckay.coffeep;
+package org.cdmckay.coffeep.readers;
 
 import com.sun.tools.classfile.*;
 import org.apache.log4j.Logger;
+import org.cdmckay.coffeep.CoffeepType;
 
 public class TypeReader {
 
-    private static Logger logger = Logger.getLogger(TypeReader.class);
+    private static final Logger logger = Logger.getLogger(TypeReader.class);
 
-    private ClassFile classFile;
+    private final ClassFile classFile;
 
     public TypeReader(ClassFile classFile) {
         if (classFile == null) {

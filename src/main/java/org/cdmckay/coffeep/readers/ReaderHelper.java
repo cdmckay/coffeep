@@ -1,4 +1,4 @@
-package org.cdmckay.coffeep;
+package org.cdmckay.coffeep.readers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

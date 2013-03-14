@@ -16,21 +16,9 @@
 
 package org.cdmckay.coffeep;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+public class CoffeepInstruction {
 
-public class CoffeepMethod {
-
-    public String internalType;
-    public String returnType;
-    public Set<String> modifiers = new HashSet<String>();
-    public List<String> typeParameterTypes = new ArrayList<String>();
-    public String name;
-    public List<String> parameterTypes = new ArrayList<String>();
-    public List<String> throwsTypes = new ArrayList<String>();
-    public Set<String> flags = new HashSet<String>();
-    public CoffeepCode code;
+    public int pc;
+    public String mnemonic;
 
 }

@@ -33,7 +33,4 @@ public class CoffeepField {
     public String name;
     public Set<String> flags = new HashSet<String>();
 
-    // TODO Add attributes.
-    //public List<String> attributes = new ArrayList<String>();
-
 }
