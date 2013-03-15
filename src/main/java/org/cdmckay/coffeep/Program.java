@@ -24,6 +24,7 @@ import com.sun.tools.classfile.ConstantPoolException;
 import com.sun.tools.classfile.DescriptorException;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.Context;
+import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.cdmckay.coffeep.readers.TypeReader;
 
@@ -44,12 +45,27 @@ public class Program {
     private final static Logger logger = Logger.getLogger(Program.class);
 
     public static void main(String[] args) throws IOException, ConstantPoolException, DescriptorException {
-        if (args.length == 0) {
-            logger.fatal("No class argument");
-            System.out.println("Usage: coffeep <class>");
+        final Options options = createOptions();
+        final CommandLineParser parser = new PosixParser();
+        final CommandLine line;
+        try {
+            line = parser.parse(options, args);
+            if (line.getArgList().isEmpty()) {
+                logger.fatal("Missing class argument");
+                System.out.println("Missing class argument");
+            }
+
+            if (line.getArgList().isEmpty() || line.hasOption('h')) {
+                final HelpFormatter helpFormatter = new HelpFormatter();
+                helpFormatter.printHelp("coffeep <options> <class>", options);
+                return;
+            }
+        } catch (ParseException e) {
+            logger.fatal("Command line parsing failed", e);
             return;
         }
-        final String className = args[0];
+
+        final String className = line.getArgs()[0];
         final JavaFileObject fileObject = getFileObject(className);
         if (fileObject == null) {
             logger.fatal("Class not found: " + className);
@@ -64,9 +80,26 @@ public class Program {
         final TypeReader typeReader = new TypeReader(classFile);
         coffeep.type = typeReader.read();
 
-        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        final Gson gson;
+        if (line.hasOption('p')) {
+            gson = new GsonBuilder().setPrettyPrinting().create();
+        } else {
+            gson = new Gson();
+        }
         final String json = gson.toJson(coffeep);
         System.out.println(json);
+    }
+
+    private static Options createOptions() {
+        final Options options = new Options();
+
+        final Option helpOption = new Option("h", "help", false, "print this message");
+        options.addOption(helpOption);
+
+        final Option prettyPrintOption = new Option("p", "pretty", false, "pretty print the JSON");
+        options.addOption(prettyPrintOption);
+
+        return options;
     }
 
     private static JavaFileObject getFileObject(String className) throws IOException {
