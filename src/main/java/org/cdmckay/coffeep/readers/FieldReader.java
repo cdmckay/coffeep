@@ -24,27 +24,27 @@ public class FieldReader {
 
     private static final Logger logger = Logger.getLogger(FieldReader.class);
 
-    private final ConstantPool constantPool;
+    private final ClassFile classFile;
     private final Field field;
 
-    public FieldReader(ConstantPool constantPool, Field field) {
-        this.constantPool = constantPool;
+    public FieldReader(ClassFile classFile, Field field) {
+        this.classFile = classFile;
         this.field = field;
     }
 
     public CoffeepField read() throws ConstantPoolException, DescriptorException {
         final CoffeepField coffeepField = new CoffeepField();
 
-        coffeepField.internalType = field.descriptor.getValue(constantPool);
+        coffeepField.internalType = field.descriptor.getValue(classFile.constant_pool);
         coffeepField.modifiers = field.access_flags.getFieldModifiers();
-        coffeepField.type = field.descriptor.getFieldType(constantPool);
-        coffeepField.name = field.getName(constantPool);
+        coffeepField.type = field.descriptor.getFieldType(classFile.constant_pool);
+        coffeepField.name = field.getName(classFile.constant_pool);
         coffeepField.flags = field.access_flags.getFieldFlags();
 
         final Signature_attribute signatureAttribute = (Signature_attribute) field.attributes.get(Attribute.Signature);
         if (signatureAttribute != null) {
             try {
-                final Type type = signatureAttribute.getParsedSignature().getType(constantPool);
+                final Type type = signatureAttribute.getParsedSignature().getType(classFile.constant_pool);
                 coffeepField.type = type.toString().replace('/', '.');
             } catch (ConstantPoolException e) {
                 throw new RuntimeException(e);

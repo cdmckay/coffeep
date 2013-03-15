@@ -53,11 +53,11 @@ public class TypeReader {
         coffeepType.flags = classFile.access_flags.getClassFlags();
 
         for (Field field : classFile.fields) {
-            coffeepType.fields.add(new FieldReader(classFile.constant_pool, field).read());
+            coffeepType.fields.add(new FieldReader(classFile, field).read());
         }
 
         for (Method method : classFile.methods) {
-            coffeepType.methods.add(new MethodReader(classFile.constant_pool, method).read());
+            coffeepType.methods.add(new MethodReader(classFile, method).read());
         }
 
         return coffeepType;

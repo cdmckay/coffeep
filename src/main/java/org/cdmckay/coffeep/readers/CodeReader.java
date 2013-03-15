@@ -16,10 +16,7 @@
 
 package org.cdmckay.coffeep.readers;
 
-import com.sun.tools.classfile.Code_attribute;
-import com.sun.tools.classfile.ConstantPool;
-import com.sun.tools.classfile.ConstantPoolException;
-import com.sun.tools.classfile.Instruction;
+import com.sun.tools.classfile.*;
 import org.apache.log4j.Logger;
 import org.cdmckay.coffeep.CoffeepCode;
 import org.cdmckay.coffeep.CoffeepInstruction;
@@ -33,11 +30,11 @@ public class CodeReader {
 
     private static final Logger logger = Logger.getLogger(CodeReader.class);
 
-    final ConstantPool constantPool;
+    final ClassFile classFile;
     final Code_attribute codeAttribute;
 
-    public CodeReader(ConstantPool constantPool, Code_attribute codeAttribute) {
-        this.constantPool = constantPool;
+    public CodeReader(ClassFile classFile, Code_attribute codeAttribute) {
+        this.classFile = classFile;
         this.codeAttribute = codeAttribute;
     }
 
@@ -146,14 +143,14 @@ public class CodeReader {
         ConstantPool.CPInfo constantPoolInfo;
 
         try {
-            constantPoolInfo = constantPool.get(index);
+            constantPoolInfo = classFile.constant_pool.get(index);
             final int tag = constantPoolInfo.getTag();
             switch (tag) {
                 case ConstantPool.CONSTANT_Methodref:
                 case ConstantPool.CONSTANT_InterfaceMethodref:
                 case ConstantPool.CONSTANT_Fieldref:
                     ConstantPool.CPRefInfo constantPoolRefInfo = (ConstantPool.CPRefInfo) constantPoolInfo;
-                    constantPoolInfo = constantPool.get(constantPoolRefInfo.name_and_type_index);
+                    constantPoolInfo = classFile.constant_pool.get(constantPoolRefInfo.name_and_type_index);
             }
         } catch (ConstantPool.InvalidIndex e) {
             throw new RuntimeException(e);
@@ -287,7 +284,7 @@ public class CodeReader {
                     ConstantPool.CONSTANT_String_info info, Void v
                 ) {
                     try {
-                        return getConstantPoolReferenceValue(constantPool.getUTF8Info(info.string_index));
+                        return getConstantPoolReferenceValue(classFile.constant_pool.getUTF8Info(info.string_index));
                     } catch (ConstantPoolException e) {
                         throw new RuntimeException(e);
                     }
