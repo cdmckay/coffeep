@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.tools.classfile.Attribute;
 import com.sun.tools.classfile.ClassFile;
 import com.sun.tools.classfile.ConstantPoolException;
+import com.sun.tools.classfile.DescriptorException;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.Context;
 import org.apache.log4j.Logger;
@@ -42,7 +43,7 @@ public class Program {
 
     private final static Logger logger = Logger.getLogger(Program.class);
 
-    public static void main(String[] args) throws IOException, ConstantPoolException {
+    public static void main(String[] args) throws IOException, ConstantPoolException, DescriptorException {
         if (args.length == 0) {
             logger.fatal("No class argument");
             System.out.println("Usage: coffeep <class>");
@@ -102,7 +103,7 @@ public class Program {
             try {
                 messageDigest = MessageDigest.getInstance("MD5");
             } catch (NoSuchAlgorithmException e) {
-                logger.warn("NoSuchAlgorithmException while getting MD5 MessageDigest", e);
+                logger.warn("Exception while getting MD5 MessageDigest", e);
             }
 
             DigestInputStream digestInputStream = new DigestInputStream(inputStream, messageDigest);

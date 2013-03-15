@@ -16,9 +16,13 @@
 
 package org.cdmckay.coffeep;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CoffeepInstruction {
 
     public int pc;
     public String mnemonic;
+    public List<String> operands = new ArrayList<String>();
 
 }

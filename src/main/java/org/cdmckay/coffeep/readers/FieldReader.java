@@ -32,13 +32,13 @@ public class FieldReader {
         this.field = field;
     }
 
-    public CoffeepField read() {
+    public CoffeepField read() throws ConstantPoolException, DescriptorException {
         final CoffeepField coffeepField = new CoffeepField();
 
-        coffeepField.internalType = ReaderHelper.getString(field.descriptor, "value", constantPool);
+        coffeepField.internalType = field.descriptor.getValue(constantPool);
         coffeepField.modifiers = field.access_flags.getFieldModifiers();
-        coffeepField.type = ReaderHelper.getString(field.descriptor, "fieldType", constantPool);
-        coffeepField.name = ReaderHelper.getString(field, "name", constantPool);
+        coffeepField.type = field.descriptor.getFieldType(constantPool);
+        coffeepField.name = field.getName(constantPool);
         coffeepField.flags = field.access_flags.getFieldFlags();
 
         final Signature_attribute signatureAttribute = (Signature_attribute) field.attributes.get(Attribute.Signature);
@@ -47,7 +47,7 @@ public class FieldReader {
                 final Type type = signatureAttribute.getParsedSignature().getType(constantPool);
                 coffeepField.type = type.toString().replace('/', '.');
             } catch (ConstantPoolException e) {
-                logger.warn("Exception while getting signature attribute", e);
+                throw new RuntimeException(e);
             }
         }
 

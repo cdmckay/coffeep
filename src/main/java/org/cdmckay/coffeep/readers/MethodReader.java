@@ -34,22 +34,20 @@ public class MethodReader {
         this.method = method;
     }
 
-    public CoffeepMethod read() {
+    public CoffeepMethod read() throws ConstantPoolException, DescriptorException {
         final CoffeepMethod coffeepMethod = new CoffeepMethod();
 
-        coffeepMethod.internalType = ReaderHelper.getString(method.descriptor, "value", constantPool);
+        coffeepMethod.internalType = method.descriptor.getValue(constantPool);
         coffeepMethod.modifiers = method.access_flags.getMethodModifiers();
-        coffeepMethod.name = ReaderHelper.getString(method, "name", constantPool);
+        coffeepMethod.name = method.getName(constantPool);
         coffeepMethod.flags = method.access_flags.getFieldFlags();
-        coffeepMethod.returnType = ReaderHelper.getString(method.descriptor, "returnType", constantPool);
+        coffeepMethod.returnType = method.descriptor.getReturnType(constantPool);
 
         final Signature_attribute signatureAttribute = (Signature_attribute) method.attributes.get(Attribute.Signature);
         if (signatureAttribute == null) {
             // This doesn't need to handle the case Foo<Bar, Baz> because if the parameter types have type parameters,
             // they'll have a Signature attribute.
-            final String joinedParameterTypes = ReaderHelper.getString(
-                method.descriptor, "parameterTypes", constantPool
-            );
+            final String joinedParameterTypes = method.descriptor.getParameterTypes(constantPool);
             coffeepMethod.parameterTypes = Arrays.asList(
                 joinedParameterTypes.substring(1, joinedParameterTypes.length() - 1).split(", ")
             );
@@ -58,9 +56,7 @@ public class MethodReader {
                 (Exceptions_attribute) method.attributes.get(Attribute.Exceptions);
             if (exceptionsAttribute != null) {
                 for (int i = 0; i < exceptionsAttribute.number_of_exceptions; i++) {
-                    coffeepMethod.throwsTypes.add(
-                        ReaderHelper.getString(exceptionsAttribute, "exception", i, constantPool)
-                    );
+                    coffeepMethod.throwsTypes.add(exceptionsAttribute.getException(i, constantPool));
                 }
             }
         } else {
@@ -83,13 +79,13 @@ public class MethodReader {
                     }
                 }
             } catch (ConstantPoolException e) {
-                logger.warn("Exception while getting signature attribute", e);
+                throw new RuntimeException(e);
             }
         }
 
         final Code_attribute codeAttribute = (Code_attribute) method.attributes.get(Attribute.Code);
         if (codeAttribute != null) {
-            coffeepMethod.code = new CodeReader(codeAttribute).read();
+            coffeepMethod.code = new CodeReader(constantPool, codeAttribute).read();
         }
 
         return coffeepMethod;

@@ -34,7 +34,7 @@ public class TypeReader {
         this.classFile = classFile;
     }
 
-    public CoffeepType read() {
+    public CoffeepType read() throws ConstantPoolException, DescriptorException {
         final CoffeepType coffeepType = new CoffeepType();
 
         final SourceFile_attribute sourceFileAttribute =
@@ -42,13 +42,12 @@ public class TypeReader {
         try {
             coffeepType.sourceFile = sourceFileAttribute.getSourceFile(classFile.constant_pool);
         } catch (ConstantPoolException e) {
-            logger.warn("Exception while getting sourceFile attribute", e);
-            coffeepType.sourceFile = "???";
+            throw new RuntimeException(e);
         }
 
         coffeepType.modifiers = classFile.access_flags.getClassModifiers();
         coffeepType.type = classFile.isClass() ? "class" : "interface";
-        coffeepType.name = ReaderHelper.getString(classFile, "name");
+        coffeepType.name = classFile.getName();
         coffeepType.majorVersion = classFile.major_version;
         coffeepType.minorVersion = classFile.minor_version;
         coffeepType.flags = classFile.access_flags.getClassFlags();
