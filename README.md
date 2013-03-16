@@ -8,7 +8,7 @@ The easiest way to use coffeep is to build the JAR using Maven (remember to inst
 ```
 > mvn package
 > cd target
-> java -jar coffeep-1.0-SNAPSHOT.jar Foo.class
+> java -jar coffeep-1.0-SNAPSHOT.jar --pretty Foo.class
 {
   "systemInfo": {
     "classFileUri": "file:/path/to/Program.class",
