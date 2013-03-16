@@ -86,6 +86,13 @@ public class MethodReader {
         final Code_attribute codeAttribute = (Code_attribute) method.attributes.get(Attribute.Code);
         if (codeAttribute != null) {
             coffeepMethod.code = new CodeReader(classFile, codeAttribute).read();
+            final LineNumberTable_attribute lineNumberTableAttribute =
+                (LineNumberTable_attribute) codeAttribute.attributes.get(Attribute.LineNumberTable);
+            if (lineNumberTableAttribute != null) {
+                for (LineNumberTable_attribute.Entry entry : lineNumberTableAttribute.line_number_table) {
+                    coffeepMethod.lineNumberMap.put(entry.line_number, entry.start_pc);
+                }
+            }
         }
 
         return coffeepMethod;

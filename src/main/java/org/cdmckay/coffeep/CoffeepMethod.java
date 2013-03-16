@@ -16,10 +16,7 @@
 
 package org.cdmckay.coffeep;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CoffeepMethod {
 
@@ -32,5 +29,6 @@ public class CoffeepMethod {
     public List<String> throwsTypes = new ArrayList<String>();
     public Set<String> flags = new HashSet<String>();
     public CoffeepCode code;
+    public Map<Integer, Integer> lineNumberMap = new HashMap<Integer, Integer>();
 
 }
