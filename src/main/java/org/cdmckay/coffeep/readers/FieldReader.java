@@ -45,7 +45,7 @@ public class FieldReader {
         if (signatureAttribute != null) {
             try {
                 final Type type = signatureAttribute.getParsedSignature().getType(classFile.constant_pool);
-                coffeepField.type = type.toString().replace('/', '.');
+                coffeepField.type = type.toString();
             } catch (ConstantPoolException e) {
                 throw new RuntimeException(e);
             }

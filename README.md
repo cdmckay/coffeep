@@ -9,7 +9,31 @@ The easiest way to use coffeep is to build the JAR using Maven (remember to inst
 > mvn package
 > cd target
 > java -jar coffeep-1.0-SNAPSHOT.jar Foo.class
-{ ... }
+{
+  "systemInfo": {
+    "classFileUri": "file:/path/to/Program.class",
+    "classFileSize": 7974,
+    "lastModifiedTimestamp": 1363472205248,
+    "digestAlgorithm": "MD5",
+    "digest": "fb9ebd25984722295d13ab79da3a28e8"
+  },
+  "type": {
+    "sourceFile": "Program.java",
+    "modifiers": [
+      "public"
+    ],
+    "type": "class",
+    "name": "org/cdmckay/coffeep/Program",
+    "majorVersion": 51,
+    "minorVersion": 0,
+    "flags": [
+      "ACC_PUBLIC",
+      "ACC_SUPER"
+    ],
+    "fields": [ ... ],
+    "methods": [ ... ]
+  }
+}
 ```
 
 ## Sun Tools

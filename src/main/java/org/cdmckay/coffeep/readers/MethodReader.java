@@ -65,17 +65,17 @@ public class MethodReader {
                 final Type.MethodType methodType = (Type.MethodType) methodSignature.getType(classFile.constant_pool);
                 if (methodType.typeParamTypes != null) {
                     for (Type type : methodType.typeParamTypes) {
-                        coffeepMethod.typeParameterTypes.add(type.toString().replace('/', '.'));
+                        coffeepMethod.typeParameterTypes.add(type.toString());
                     }
                 }
                 if (methodType.paramTypes != null) {
                     for (Type type : methodType.paramTypes) {
-                        coffeepMethod.parameterTypes.add(type.toString().replace('/', '.'));
+                        coffeepMethod.parameterTypes.add(type.toString());
                     }
                 }
                 if (methodType.throwsTypes != null) {
                     for (Type type : methodType.throwsTypes) {
-                        coffeepMethod.throwsTypes.add(type.toString().replace('/', '.'));
+                        coffeepMethod.throwsTypes.add(type.toString());
                     }
                 }
             } catch (ConstantPoolException e) {
