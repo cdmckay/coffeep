@@ -38,7 +38,7 @@ The easiest way to use coffeep is to build the JAR using Maven (remember to inst
 
 ## Sun Tools
 
-`coffeep` uses the Sun Tools suite included in the JDK. In order to compile `coffeep`, you will need to add Sun Tools
+coffeep uses the Sun Tools suite included in the JDK. In order to compile coffeep, you will need to add Sun Tools
 to your local Maven repository.
 
 To do so, locate the `tools.jar` file on your system. Typically, this is in the `lib` folder of your JDK 7 install.
