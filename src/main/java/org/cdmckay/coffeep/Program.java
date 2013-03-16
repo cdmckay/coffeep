@@ -77,8 +77,7 @@ public class Program {
         coffeep.systemInfo = new CoffeepSystemInfo();
 
         final ClassFile classFile = getClassFile(fileObject, coffeep.systemInfo);
-        final TypeReader typeReader = new TypeReader(classFile);
-        coffeep.type = typeReader.read();
+        coffeep.type = new TypeReader(classFile).read();
 
         final Gson gson;
         if (line.hasOption('p')) {

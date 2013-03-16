@@ -151,6 +151,7 @@ public class CodeReader {
                 case ConstantPool.CONSTANT_Fieldref:
                     ConstantPool.CPRefInfo constantPoolRefInfo = (ConstantPool.CPRefInfo) constantPoolInfo;
                     constantPoolInfo = classFile.constant_pool.get(constantPoolRefInfo.name_and_type_index);
+                    break;
             }
         } catch (ConstantPool.InvalidIndex e) {
             throw new RuntimeException(e);
