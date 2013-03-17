@@ -73,20 +73,21 @@ public class Program {
             return;
         }
 
+        final Coffeep coffeep = convertToCoffeep(fileObject);
+        final Gson gson = line.hasOption('p') ? new GsonBuilder().setPrettyPrinting().create() : new Gson();
+        final String json = gson.toJson(coffeep);
+        System.out.println(json);
+    }
+
+    public static Coffeep convertToCoffeep(JavaFileObject fileObject)
+        throws IOException, ConstantPoolException, DescriptorException {
         final Coffeep coffeep = new Coffeep();
         coffeep.systemInfo = new CoffeepSystemInfo();
 
         final ClassFile classFile = getClassFile(fileObject, coffeep.systemInfo);
         coffeep.type = new TypeReader(classFile).read();
 
-        final Gson gson;
-        if (line.hasOption('p')) {
-            gson = new GsonBuilder().setPrettyPrinting().create();
-        } else {
-            gson = new Gson();
-        }
-        final String json = gson.toJson(coffeep);
-        System.out.println(json);
+        return coffeep;
     }
 
     private static Options createOptions() {
